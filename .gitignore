@@ -1,4 +1,4 @@
-src/dist/*
-src/node_modules/*
-*.lock
+dist/
+node_modules/
+lock*
 *.cache

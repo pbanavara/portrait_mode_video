@@ -2,3 +2,5 @@ dist/
 node_modules/
 lock*
 *.cache
+*.jpg
+*.mp4

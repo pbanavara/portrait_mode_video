@@ -1,0 +1,25 @@
+<html>
+<head>
+ <body onload="onLoad()">
+   <div id="container">
+     <div id="show-background">Show background as magenta
+       <input id="show-background-toggle" type="checkbox" checked>
+     </div>
+     <canvas id="canvas" width=640px height=480px></canvas>
+   </div>
+ </body>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.2"></script>
+<script>
+  async function onLoad() {
+    const MODEL_URL = 'http://localhost:8080/tensorflowjs_model.pb';
+    const WEIGHTS_URL = 'http://localhost:8080/weights_manifest.json';
+    // Model's input and output have width and height of 513.
+    const TENSOR_EDGE = 513;
+    const [model, stream] = await Promise.all([
+        tf.loadFrozenModel(MODEL_URL, WEIGHTS_URL),
+        navigator.mediaDevices.getUserMedia({video: {facingMode: 'user',
+						     frameRate: 30, width : 640, height:480}})]);
+  };
+</script>
+</html>

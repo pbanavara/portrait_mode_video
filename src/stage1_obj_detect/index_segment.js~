@@ -1,0 +1,10 @@
+import * as segment from '@~/dev/tfjs_models/deeplab_web_model'
+
+let modelPromise;
+
+async function processImage(image) {
+    const model = await modelPromise;
+    const result = await model.detect(image);
+    console.log(result);
+}
+

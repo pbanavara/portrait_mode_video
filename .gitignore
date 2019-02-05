@@ -1,6 +1,11 @@
 dist/
 node_modules/
 lock*
+__pycache__/
+*~
+*pyc
+*.png
+*.jpeg
 *.cache
 *.jpg
 *.mp4

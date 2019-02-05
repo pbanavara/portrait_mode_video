@@ -298,8 +298,10 @@ class Model(object):
             for _round in trange(rounds, ascii=True, ncols=80, desc='Saving predictions as PNGs'):
                     #samples, output_files = dataset.next_batch(batch_size, 'test', segnet_stream)
                 inputs = self.preprocess_inputs(image, segnet_stream)
+                print("Done preprocessing")
                 masks = self.sess.run(probabilities, feed_dict={input_image: image})
                 masks = np.where(masks.astype(np.float32) < 162.0/255.0, 0, 255).astype('uint8')
+                print("Done predicting")
                 return masks
                 #for mask in masks:
                     #imsave(os.path.join(pred_masks_path, "output_file_2.png"), mask[:, :, 0])

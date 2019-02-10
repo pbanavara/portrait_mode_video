@@ -1,0 +1,8 @@
+gunicorn
+socketio
+flask
+pillow
+base64
+scikit-image
+numpy
+tensorflow-gpu

@@ -141,7 +141,7 @@ function takePicture(img) {
 	var bbox = results[0].bbox;
 	if (tempBytes == undefined) {
 	    tempBbox = results[0].bbox; 
-	    const socket = io('http://34.238.225.174:8888');
+	    const socket = io('http://54.88.230.253:8888');
 	    socket.on('connect', function() {
 		socket.emit('my event', {'data_new': data_sock, 'bbox': tempBbox},
 			    function(error, resp) {

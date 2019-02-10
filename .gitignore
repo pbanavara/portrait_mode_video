@@ -5,7 +5,6 @@ lock*
 __pycache__/
 *~
 *pyc
-*.png
 *.jpeg
 *.cache
 *.jpg

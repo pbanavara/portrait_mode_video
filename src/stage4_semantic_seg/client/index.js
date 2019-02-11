@@ -17,20 +17,20 @@
 
 import * as cocoSsd from '@tensorflow-models/coco-ssd'
 
-//Global variables
+//Global letiables
 let modelPromise;
 import io from 'socket.io-client';
 import * as http from 'http';
 import * as uploader from 'base64-image-upload';
 
 window.onload = () => modelPromise = cocoSsd.load();
-var streaming = false;
-var width = 600;    // We will scale the photo width to this
-var height = 0;
-//Temporary variable to store previous frame values
-var tempBbox;
-var tempBytes;
-var outputImage = new Image();
+let streaming = false;
+let width = 600;    // We will scale the photo width to this
+let height = 0;
+//Temporary letiable to store previous frame values
+let tempBbox;
+let tempBytes;
+let outputImage = new Image();
 function hasGetUserMedia() {
   return !!(navigator.mediaDevices &&
     navigator.mediaDevices.getUserMedia);
@@ -75,7 +75,7 @@ async function processImage(image) {
     const model = await modelPromise;
     const result = await model.detect(image);
     for (let i=0;i<result.length;++i) {
-        var data = context.getImageData(0, 0, image.width, image.height).data;
+        let data = context.getImageData(0, 0, image.width, image.height).data;
         changeBackgroundPixels(data, result[i].bbox, image.width);
         context.beginPath();
         context.rect(...result[i].bbox);
@@ -91,10 +91,10 @@ function encode (input) {
     /**
      * A helpler method to encode the bytearray image for rendering in the context
      */
-    var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-    var output = "";
-    var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-    var i = 0;
+    let keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    let output = "";
+    let chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+    let i = 0;
     while (i < input.length) {
         chr1 = input[i++];
         chr2 = i < input.length ? input[i++] : Number.NaN; // Not sure if the index 
@@ -116,23 +116,23 @@ function encode (input) {
     return output;
 }
 
-function takePicture(img) {
+function takePicture() {
     /**
      * Method to obtain semantic sergmentation masks from the backend server
      * Calls the process image helper method asynchronously to get the processed mask
      * @param img A javascript image object to be processed 
      */
-    var context = canvas.getContext('2d');
-    var data = canvas.toDataURL('image/jpeg');
-    var data_sock = canvas.toDataURL();
-    var img = new Image();
+    let context = canvas.getContext('2d');
+    let data = canvas.toDataURL('image/jpeg');
+    let data_sock = canvas.toDataURL();
+    let img = new Image();
     img.src = data;
     processImage(img).then(results => {
         console.log(results);
         if (results.length <= 0) {
             throw "The bounding box was not returned";
         }
-        var bbox = results[0].bbox;
+        let bbox = results[0].bbox;
         if (tempBytes == undefined) {
             tempBbox = results[0].bbox; 
             const socket = io('http://54.88.230.253:8888');
@@ -145,10 +145,10 @@ function takePicture(img) {
             });
             socket.on('my-response', function(data){
             console.log(data.masks);   //should output 'hello world'
-            var arrayBuffer = data.masks;
-            var bytes = new Uint8Array(arrayBuffer);
+            let arrayBuffer = data.masks;
+            let bytes = new Uint8Array(arrayBuffer);
             tempBytes = bytes;
-            var encodedBytes = encode(bytes);
+            let encodedBytes = encode(bytes);
             outputImage.onload = function() {
                 context.drawImage(outputImage, 0, 0, canvas.width, canvas.height);
             }
@@ -156,7 +156,7 @@ function takePicture(img) {
             });
         } else if (Math.abs(tempBbox[0] - bbox[0]) < 15) {
             // Do not call the segment mask API, just render the previous image bytes
-            var encodedBytes = encode(tempBytes);
+            let encodedBytes = encode(tempBytes);
             outputImage.onload = function() {
                 context.drawImage(outputImage, 0, 0, canvas.width, canvas.height);
             }
@@ -180,9 +180,9 @@ function changeBackgroundPixels(data, bbox, width) {
     */
     console.log(data.length);
     console.log(bbox);
-    for (var i = 0; i < data.length; i += 4) {
-    var x = (i / 4) % width;
-        var y = Math.floor((i / 4) / width);
+    for (let i = 0; i < data.length; i += 4) {
+    let x = (i / 4) % width;
+        let y = Math.floor((i / 4) / width);
         if (x < bbox[0] || x > bbox[0]+bbox[2] || y < bbox[1] || y > bbox[1]+bbox[3]) {
             //console.log("Blur image");
             context.fillStyle = "rgba("+255+","+255+","+0+","+(255)+")";
